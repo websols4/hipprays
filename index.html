@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DTC Brands</title>
+    <!-- CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .bubble-map {
+        min-height: 100vh;
+      }
+    </style>
+    <link rel="stylesheet" href="css/bubble-map.css" />
+  </head>
+  <body>
+    <div id="bubble-map"></div>
+    <!-- JS -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="js/vis-bubble-map.js"></script>
+    <script src="js/vis-tooltip.js"></script>
+    <script src="js/vis-size-legend.js"></script>
+    <script src="js/vis-filter.js"></script>
+    <!-- Scripts -->
+    <script>
+      {
+        const BRANDS_DATA_URL = "DTC Brands Data.csv";
+        const MASTER_DATA_URL = "DTC Brands Master.csv";
+        const WORLD_DATA_URL =
+          "https://unpkg.com/visionscarto-world-atlas@0.0.6/world/50m_countries.geojson";
+        Promise.all([
+          d3.csv(BRANDS_DATA_URL),
+          d3.csv(MASTER_DATA_URL),
+          d3.json(WORLD_DATA_URL),
+        ])
+          .then(([brandsData, masterData, worldData]) => {
+            new VisBubbleMap({
+              el: document.getElementById("bubble-map"),
+              brandsData,
+              masterData,
+              worldData,
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    </script>
+  </body>
+</html>
